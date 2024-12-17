@@ -33,7 +33,7 @@ public class AttachMain {
 
         //找到了当前进程并且连接上了
         // 执行 java agent 里边的agentmain方法
-        vm.loadAgent("D:\\Project\\javaProjects_github\\javaThreadState\\ccAgent\\target\\#maven-assembly-plugin\\ccAgent-1.0-SNAPSHOT-jar-with-dependencies.jar");
+        vm.loadAgent("ccAgent-1.0-SNAPSHOT-jar-with-dependencies.jar");
     }
 
     public static String getRunningJavaThreadId() throws IOException {

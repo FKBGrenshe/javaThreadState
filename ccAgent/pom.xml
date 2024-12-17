@@ -82,13 +82,42 @@
                         <manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
                     </archive>
                     <!-- 设置 JAR 包输出目录 -->
-                    <outputDirectory>${project.build.directory}/#maven-assembly-plugin</outputDirectory>
+                    <!--<outputDirectory>${project.build.directory}</outputDirectory>-->
                     <!-- 设置打包后的 JAR 包的目录结构为默认 -->
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
             </plugin>
+
+            <!--打包成jar包使用-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>congchuan-attach-agent</finalName>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.congchuan.AttachMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+
         </plugins>
+
+
+
     </build>
 </project>
