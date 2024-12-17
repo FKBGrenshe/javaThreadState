@@ -4,6 +4,9 @@ import org.objectweb.asm.*;
 
 import static org.objectweb.asm.Opcodes.*;
 
+/**
+ * @author fkbgr
+ */
 public class AsmEnhancer {
 
 

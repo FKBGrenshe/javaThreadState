@@ -12,6 +12,9 @@ import java.io.IOException;
 import static org.objectweb.asm.Opcodes.ASM7;
 import static org.objectweb.asm.Opcodes.ICONST_0;
 
+/**
+ * @author fkbgr
+ */
 public class ASMDemo {
     public static void main(String[] args) throws IOException {
 

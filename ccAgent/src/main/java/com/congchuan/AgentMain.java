@@ -7,6 +7,9 @@ import com.congchuan.command.ThreadCommand;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 
+/**
+ * @author fkbgr
+ */
 public class AgentMain {
     // premain
     public static void premain(String agentArgs, Instrumentation inst){
