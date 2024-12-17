@@ -1,6 +1,13 @@
 package com.congchuan.command;
 
 import com.congchuan.enhancer.AsmEnhancer;
+import com.congchuan.enhancer.MyAdvice;
+import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.asm.Advice;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.matcher.ElementMatchers;
+import net.bytebuddy.utility.JavaModule;
 import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.core.v1.api.loader.Loader;
 import org.jd.core.v1.api.loader.LoaderException;
@@ -134,6 +141,49 @@ public class ClassCommand {
                     // 3. 删除转换器
                     inst.removeTransformer(classFileTransformer);
                 }
+            }
+        }
+    }
+
+
+    // 使用bytebuddy对类进行增强，统计执行耗时
+    public static void enhanceClassByteBuddy(Instrumentation inst){
+        // 让用户输入类名
+        System.out.println("去输入需要打印源码的类名：");
+        Scanner scanner = new Scanner(System.in);
+        String className = scanner.next();
+        while (className.isEmpty()){
+            System.out.println("类名不能为空！请重新输入");
+        }
+        // 根据类名找到class对象
+        Class[] allLoadedClasses = inst.getAllLoadedClasses();
+        for (Class allLoadedClass : allLoadedClasses) {
+            if (allLoadedClass.getName().equals(className)){
+                System.out.println("已找到："+allLoadedClass);
+                // 使用bytebuddy增强类
+                new AgentBuilder.Default()
+                        // 禁止byte buddy处理时修改类名
+                        .disableClassFormatChanges()
+                        // 处理时使用retranceform增强
+                        .with(AgentBuilder.RedefinitionStrategy.RETRANSFORMATION)
+                        // 打印出错误日志
+                        . with(
+                                new AgentBuilder
+                                        .Listener
+                                        .WithTransformationsOnly(
+                                                AgentBuilder
+                                                        .Listener
+                                                        .StreamWriting
+                                                        .toSystemOut()
+                                )
+                        )
+                        .type(ElementMatchers.named(className))
+                        // 增强，使用MyAdvice通知，对所有方法都进行增强
+                        .transform(
+                                (builder, typeDescription, classLoader, javaModule, protectionDomain) ->
+                                        builder.visit(Advice.to(MyAdvice.class).on(ElementMatchers.any()))
+                        )
+                        .installOn(inst);
             }
         }
     }

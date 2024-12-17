@@ -2,6 +2,7 @@ com\congchuan\enhancer\ASMDemo$1.class
 com\congchuan\enhancer\ASMDemo.class
 com\congchuan\command\ClassCommand$1.class
 com\congchuan\enhancer\ASMDemo$1$1.class
+com\congchuan\enhancer\MyAdvice.class
 com\congchuan\AttachMain.class
 com\congchuan\command\MemoryCommand.class
 com\congchuan\enhancer\AsmEnhancer$1.class

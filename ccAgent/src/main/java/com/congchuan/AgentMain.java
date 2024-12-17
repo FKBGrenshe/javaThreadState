@@ -36,6 +36,9 @@ public class AgentMain {
         System.out.println("ASM技术增强源码");
         ClassCommand.enhanceClass(inst);
 
+        System.out.println("ASM技术增强源码 - byteBuddy");
+        ClassCommand.enhanceClassByteBuddy(inst);
+
 
 
     }
