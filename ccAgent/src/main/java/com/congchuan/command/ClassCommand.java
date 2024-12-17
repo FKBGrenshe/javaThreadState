@@ -1,5 +1,6 @@
 package com.congchuan.command;
 
+import com.congchuan.enhancer.AsmEnhancer;
 import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.core.v1.api.loader.Loader;
 import org.jd.core.v1.api.loader.LoaderException;
@@ -83,7 +84,55 @@ public class ClassCommand {
                 }
             }
         }
+    }
+    // 对类进行增强，统计执行耗时
+    public static void enhanceClass(Instrumentation inst){
+        // 让用户输入类名
+        System.out.println("去输入需要打印源码的类名：");
+        Scanner scanner = new Scanner(System.in);
+        String className = scanner.next();
+        while (className.isEmpty()){
+            System.out.println("类名不能为空！请重新输入");
+        }
+        // 根据类名找到class对象
+        Class[] allLoadedClasses = inst.getAllLoadedClasses();
+        for (Class allLoadedClass : allLoadedClasses) {
+            if (allLoadedClass.getName().equals(className)){
+                System.out.println("已找到："+allLoadedClass);
+                // 创建 类文件转换器 -- 不修改版
+                ClassFileTransformer classFileTransformer = new ClassFileTransformer() {
+                    @Override
+                    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+                        // 通过ASM对类进行增强，返回字节码信息
+                        byte[] bytes = AsmEnhancer.enhanceClass(classfileBuffer);
+                        return bytes;
+                        /*// 打印字节码信息
+                        System.out.println("字节码信息：\t" + classfileBuffer);
+                        try {
+                            // 通过JDCore反编译源代码
+                            printJDCoreSourceCode(classfileBuffer,className);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        // 返回null不产生任何转换
+                        return ClassFileTransformer.super.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);*/
+                    }
+                };
 
+                // 添加转换器
+                inst.addTransformer(classFileTransformer,true);
+
+                // 2. 手动触发转换
+                try {
+                    inst.retransformClasses(allLoadedClass);
+                } catch (UnmodifiableClassException e) {
+                    e.printStackTrace();
+                }finally {
+                    // 3. 删除转换器
+                    inst.removeTransformer(classFileTransformer);
+                }
+            }
+        }
     }
 
 

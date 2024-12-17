@@ -1,8 +1,15 @@
+com\congchuan\enhancer\ASMDemo$1.class
+com\congchuan\enhancer\ASMDemo.class
 com\congchuan\command\ClassCommand$1.class
+com\congchuan\enhancer\ASMDemo$1$1.class
+com\congchuan\AttachMain.class
+com\congchuan\command\MemoryCommand.class
+com\congchuan\enhancer\AsmEnhancer$1.class
 com\congchuan\command\ClassCommand.class
+com\congchuan\command\ClassCommand$4.class
+com\congchuan\enhancer\MyMethodVisitor.class
 com\congchuan\command\ClassCommand$3.class
 com\congchuan\AgentMain.class
-com\congchuan\AttachMain.class
 com\congchuan\command\ClassCommand$2.class
 com\congchuan\command\ThreadCommand.class
-com\congchuan\command\MemoryCommand.class
+com\congchuan\enhancer\AsmEnhancer.class

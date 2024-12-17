@@ -30,6 +30,9 @@ public class AgentMain {
         System.out.println("类源码");
         ClassCommand.printClassSourceCode(inst);
 
+        System.out.println("ASM技术增强源码");
+        ClassCommand.enhanceClass(inst);
+
 
 
     }
